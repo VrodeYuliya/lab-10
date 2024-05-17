@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.topic3.android.reddit.R
+import com.topic3.android.reddit.routing.BackButtonAction
 
 import com.topic3.android.reddit.routing.RedditRouter
 import com.topic3.android.reddit.viewmodel.MainViewModel
@@ -44,12 +45,13 @@ fun ChooseCommunityScreen(viewModel: MainViewModel, modifier: Modifier = Modifie
     var currentJob by remember { mutableStateOf<Job?>(null) }
     val activeColor = MaterialTheme.colors.onSurface
 
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
         viewModel.searchCommunities(searchedText)
     }
     Column {
         ChooseCommunityTopBar()
-        TextField(value = searchedText,
+        TextField(
+            value = searchedText,
             onValueChange = {
                 searchedText = it
                 currentJob?.cancel()
@@ -64,7 +66,8 @@ fun ChooseCommunityScreen(viewModel: MainViewModel, modifier: Modifier = Modifie
                     contentDescription = stringResource(id = R.string.search)
                 )
             },
-            label = { Text(stringResource(R.string.search))
+            label = {
+                Text(stringResource(R.string.search))
             },
             modifier = modifier
                 .fillMaxWidth()
@@ -78,7 +81,10 @@ fun ChooseCommunityScreen(viewModel: MainViewModel, modifier: Modifier = Modifie
         )
         SearchedCommunities(communities, viewModel, modifier)
     }
+    BackButtonAction {
+        RedditRouter.goBack()
     }
+}
 
 
 
